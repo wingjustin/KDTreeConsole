@@ -312,6 +312,12 @@ float KDTree::CalculateSquaredEuclideanDistance(KDTreeCoordinates& coordinate1, 
 	return sqdEcldDist;
 }
 
+float KDTree::CalculateSquaredDomainDistance(KDTreeNode& pivot, KDTreeCoordinates& target) {
+	int axis = pivot.GetAxis();
+	float tempF = (*pivot.GetCoordinates())[axis] - target[axis];
+	return tempF * tempF;
+}
+
 float KDTree::CalculateManhattanDistance(KDTreeCoordinates& coordinate1, KDTreeCoordinates& coordinate2) {
 	float mhtDist = 0;
 	float tempF;
@@ -356,7 +362,7 @@ void KDTree::FindNearestNeighbour(KDTreeCoordinates* const target, KDTreeNode* c
 		? pivot->GetRightChild()
 		: pivot->GetLeftChild();
 	if (!otherSideNode->IsEmpty()) {
-		float currentDomainDistance = CalculateDomainDistance(*pivot, *target);
+		float currentDomainDistance = CalculateSquaredDomainDistance(*pivot, *target);
 		if (currentDomainDistance <= nearestDistance)
 			FindNearestNeighbour(target, otherSideNode, nearestNeighbourCollection, nearestDistance);
 	}
@@ -426,7 +432,7 @@ void KDTree::FindNearestNeighbour_BBF(KDTreeCoordinates* const target, const uns
 			}
 			//check sibling may has nearest neighbour
 			if (!sibling->IsEmpty()) {
-				float currentDomainDistance = CalculateDomainDistance(*pivot, *target);
+				float currentDomainDistance = CalculateSquaredDomainDistance(*pivot, *target);
 				if (currentDomainDistance <= nearestDistance)
 					priorityQueue.Push(currentDomainDistance, *sibling); // push into priority queue, order by domain Distance
 			}

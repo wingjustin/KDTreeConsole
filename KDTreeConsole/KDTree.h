@@ -37,6 +37,7 @@ namespace Tree {
 
 		// distance calculation
 		float CalculateSquaredEuclideanDistance(KDTreeCoordinates& coordinate1, KDTreeCoordinates& coordinate2);
+		float CalculateSquaredDomainDistance(KDTreeNode& pivot, KDTreeCoordinates& target);
 		float CalculateManhattanDistance(KDTreeCoordinates& coordinate1, KDTreeCoordinates& coordinate2);
 		float CalculateDomainDistance(KDTreeNode& pivot, KDTreeCoordinates& target);
 
